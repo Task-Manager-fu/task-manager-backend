@@ -29,7 +29,7 @@ class AuthService(
         val user = userService.findByEmail(req.email)
             ?: throw BadRequestException("Invalid credentials")
 
-        if (!HashUtil.verify(req.password, user.passwordHash))
+        if (!HashUtil.verify(req.password, user.passwordHash!!))
             throw BadRequestException("Invalid credentials")
 
         val token = jwt.generateToken(user.id!!, user.username)

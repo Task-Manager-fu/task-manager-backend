@@ -1,5 +1,8 @@
 package com.example.user
+import com.example.exceptions.AppException
+import com.example.exceptions.UnauthorizedException
 import com.example.exceptions.configureExceptionHandling
+import io.ktor.client.request.request
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -7,6 +10,7 @@ import io.ktor.http.*
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.authentication
 import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.request.receive
 
 fun Route.userRoutes(userService: UserService) {
     route("/users") {
@@ -63,14 +67,20 @@ fun Route.userRoutes(userService: UserService) {
         }
         authenticate("auth-jwt") {
             put("/edit-user/{id}") {
-                val principal = call.authentication.principal<JWTPrincipal>()
-
-                if (principal != null) {
-                    val id = principal.payload.getClaim("userId").asInt()
-                    if (id != null) {
-
+                call.configureExceptionHandling {
+                    val principal = call.authentication.principal<JWTPrincipal>()
+                    val idParam = call.parameters["id"]?.toIntOrNull()
+                    principal?.payload?.getClaim("userId")?.asInt().let {
+                        if (it == idParam){
+                            val request =call.receive<UpdateUserRequest>()
+                            val result = userService.updateUser(idParam!! ,request )
+                            call.respond(HttpStatusCode.OK, result)
+                        }else{
+                            throw UnauthorizedException()
+                        }
                     }
                 }
+
             }
 
         }

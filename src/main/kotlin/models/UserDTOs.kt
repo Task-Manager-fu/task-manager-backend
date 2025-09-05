@@ -30,7 +30,7 @@ data class UserResponse(
             isActive = u.isActive,
             avatar = u.avatar,
             bio = u.bio,
-            passwordHash = u.passwordHash,
+            passwordHash = u.passwordHash!!,
             token = u.token
         )
     }
