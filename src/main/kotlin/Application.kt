@@ -11,6 +11,8 @@ import com.example.user.UserRepository
 import com.example.user.UserService
 import com.example.exceptions.configureExceptionHandling
 import com.example.models.LoginRequest
+import com.example.team.TeamRepository
+import com.example.team.TeamService
 import com.example.utils.configureSwagger
 import io.ktor.http.HttpMethod
 import io.ktor.serialization.kotlinx.json.json
@@ -37,7 +39,10 @@ fun Application.module() {
     val userRepository = UserRepository()
     val userService = UserService(userRepository)
     val authService = AuthService(userService, jwtConfig)
-
-    configureRouting(authService, userService)
+    configureRouting(
+        authService,
+        userService ,
+        TeamService(TeamRepository())
+    )
 
 }

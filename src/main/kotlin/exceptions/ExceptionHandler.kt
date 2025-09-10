@@ -20,7 +20,8 @@ suspend fun ApplicationCall.configureExceptionHandling(block: suspend () -> Unit
         application.environment.log.error("Unhandled exception", e)
         respond(HttpStatusCode.InternalServerError, mapOf("error" to "Internal server error"))
     }catch (e: Exception) {
-        println("Error Happened: ${e.message}")
+        application.environment.log.error("Unhandled exception", e)
+        respond(HttpStatusCode.InternalServerError, mapOf("error" to e.message))
     }
 }
 

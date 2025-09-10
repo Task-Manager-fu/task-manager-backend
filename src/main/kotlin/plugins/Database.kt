@@ -1,6 +1,8 @@
 package com.example.plugins
 
 import com.example.config.AppConfig
+import com.example.team.TeamsTable
+import com.example.team.TeamsUsersTable
 import com.example.user.UsersTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -25,5 +27,7 @@ fun Application.configureDatabase(cfg: AppConfig) {
 
     transaction {
         SchemaUtils.create(UsersTable)
+        SchemaUtils.create(TeamsTable)
+        SchemaUtils.create(TeamsUsersTable)
     }
 }
