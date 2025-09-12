@@ -10,6 +10,6 @@ object TeamsTable: Table("teams") {
     val description = varchar("description", 255).nullable()
     val createdAt = timestamp("created_at").defaultExpression(CurrentTimestamp)
     val updatedAt = timestamp("updated_at").defaultExpression(CurrentTimestamp)
-
+    val creatorId = integer(name = "creatorId")
     override val primaryKey = PrimaryKey(id)
 }
