@@ -1,8 +1,8 @@
 package com.example.user
-import com.example.exceptions.AppException
 import com.example.exceptions.UnauthorizedException
 import com.example.exceptions.configureExceptionHandling
-import io.ktor.client.request.request
+import com.example.utils.respondSuccess
+import com.example.utils.respondSuccessMessage
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -18,9 +18,9 @@ fun Route.userRoutes(userService: UserService) {
             val id = call.parameters["id"]?.toIntOrNull()
             val user = id?.let { userService.getById(it) }
             if (user != null) {
-                call.respond(user)
+                call.respondSuccess(HttpStatusCode.OK , "Successfully" ,user)
             } else {
-                call.respondText("User not found", status = HttpStatusCode.NotFound)
+                call.respondSuccessMessage( status = HttpStatusCode.NotFound , message = "User not found")
             }
         }
         get("/getByUsername/{username}") {
@@ -31,7 +31,7 @@ fun Route.userRoutes(userService: UserService) {
             }
             val user = username?.let { userService.getByUsername(it) }
             if (user != null) {
-                call.respond(user)
+                call.respondSuccess(HttpStatusCode.OK , "Successfully" ,user)
             } else {
                 call.respondText("User not found", status = HttpStatusCode.NotFound)
             }
@@ -44,7 +44,7 @@ fun Route.userRoutes(userService: UserService) {
             }
             val user = username?.let { userService.getByUsername(it) }
             if (user != null) {
-                call.respond(user)
+                call.respondSuccess(HttpStatusCode.OK , "Successfully" ,user)
             } else {
                 call.respondText("User not found", status = HttpStatusCode.NotFound)
             }
@@ -57,7 +57,7 @@ fun Route.userRoutes(userService: UserService) {
                         val userId = principal.payload.getClaim("userId").asInt()
                         val user = userId?.let { userService.getById(it) }
                         if (user != null) {
-                            call.respond(user)
+                            call.respondSuccess(HttpStatusCode.OK , "Successfully" ,user)
                         } else {
                             call.respondText("User not found", status = HttpStatusCode.NotFound)
                         }
@@ -74,7 +74,7 @@ fun Route.userRoutes(userService: UserService) {
                         if (it == idParam){
                             val request =call.receive<UpdateUserRequest>()
                             val result = userService.updateUser(idParam!! ,request )
-                            call.respond(HttpStatusCode.OK, result)
+                            call.respondSuccess(HttpStatusCode.OK , "Successfully" ,result)
                         }else{
                             throw UnauthorizedException()
                         }

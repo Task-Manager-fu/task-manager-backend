@@ -1,5 +1,7 @@
 package com.example.plugins
 
+import com.example.Task.TaskAssignmentsTable
+import com.example.Task.TasksTable
 import com.example.config.AppConfig
 import com.example.team.TeamsTable
 import com.example.team.TeamsUsersTable
@@ -29,5 +31,7 @@ fun Application.configureDatabase(cfg: AppConfig) {
         SchemaUtils.create(UsersTable)
         SchemaUtils.create(TeamsTable)
         SchemaUtils.create(TeamsUsersTable)
+        SchemaUtils.create(TasksTable)
+        SchemaUtils.create(TaskAssignmentsTable)
     }
 }

@@ -1,8 +1,6 @@
 package com.example.team
 
-import com.example.exceptions.AccessDenied
-import com.example.team.TeamsUsersTable.userId
-import com.example.user.UserRepository
+import com.example.exceptions.AccessDeniedCustom
 import io.ktor.server.plugins.NotFoundException
 
 class TeamService(private val repository:  TeamRepository) {
@@ -18,24 +16,24 @@ class TeamService(private val repository:  TeamRepository) {
         return repository.getTeamsByUser(userId , page = pageNumber , pageSize = pageSize)
     }
     suspend fun addUserToTeam(teamId: Int , teamDTO: TeamDTO , userId: Int) : Boolean {
-        if (!isAdmin(teamId , userId)) throw AccessDenied("You are not allowed to add user to this team")
+        if (!isAdmin(teamId , userId)) throw AccessDeniedCustom("You are not allowed to add user to this team")
         return repository.addUserToTeam(teamId , teamDTO.userIds)
     }
     suspend fun removeUserFromTeam(teamId: Int , userId: Int , creatorId: Int): Boolean {
-        if (!isAdmin(teamId , creatorId)) throw AccessDenied("You are not allowed to remove user from this team")
+        if (!isAdmin(teamId , creatorId)) throw AccessDeniedCustom("You are not allowed to remove user from this team")
         return repository.removeUserFromTeam(teamId , userId)
     }
     suspend fun deleteTeam(teamId: Int , creatorId: Int): Boolean {
         val team  = repository.getTeamById(teamId)?: throw NotFoundException("Team $teamId not found")
         val userIds = team.userIds
         if (isAdmin(teamId = teamId, userId = creatorId)) {
-            throw AccessDenied("You are not allowed to delete this team")
+            throw AccessDeniedCustom("You are not allowed to delete this team")
         }
         return repository.deleteTeam(teamId , userIds)
     }
     suspend fun updateTeam(teamId: Int , userId: Int , teamEntity: TeamEntity): TeamEntity {
         if (!isAdmin(teamId = teamId, userId = userId)) {
-            throw AccessDenied("You are not allowed to update this team")
+            throw AccessDeniedCustom("You are not allowed to update this team")
         }
         return repository.updateTeam(teamId  , teamEntity.name!!, teamEntity.description!!)
     }

@@ -1,15 +1,15 @@
 package com.example.team
 
-import com.example.exceptions.AccessDenied
-import com.example.exceptions.AppException
+import com.example.exceptions.AccessDeniedCustom
 import com.example.exceptions.configureExceptionHandling
+import com.example.utils.respondSuccess
+import com.example.utils.respondSuccessMessage
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
-import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
@@ -26,7 +26,7 @@ fun Route.teamRoutes(teamService: TeamService) {
                     val creatorId = principal!!.payload.getClaim("userId").asInt()
                     val request = call.receive<TeamDTO>()
                     val newTeam = teamService.createTeam(request.name!!, request.description, request.userIds, creatorId)
-                    call.respond(HttpStatusCode.Created, newTeam)
+                    call.respondSuccess(HttpStatusCode.Created,"Successfully created" , newTeam)
                 }
             }
             get("/getById/{id}") {
@@ -36,9 +36,9 @@ fun Route.teamRoutes(teamService: TeamService) {
                     val userId = principal!!.payload.getClaim("userId").asInt()
                     val team = teamService.getTeam(teamId!!)
                     if (!team?.users?.any { it.id == userId }!!) {
-                        throw AccessDenied()
+                        throw AccessDeniedCustom()
                     }
-                    call.respond(team)
+                    call.respondSuccess(HttpStatusCode.OK , "Successfully" ,team)
                 }
             }
             get("/getAll") {
@@ -48,7 +48,7 @@ fun Route.teamRoutes(teamService: TeamService) {
                     val page = call.request.queryParameters["page"]?.toIntOrNull() ?: 1
                     val pageSize = call.request.queryParameters["pageSize"]?.toIntOrNull() ?: 10
                     val teams = teamService.getAllTeams(userId, page, pageSize)
-                    call.respond(teams)
+                    call.respondSuccess(HttpStatusCode.OK ,"Successfully",teams)
                 }
             }
             delete("/delete/{id}") {
@@ -56,8 +56,8 @@ fun Route.teamRoutes(teamService: TeamService) {
                     val principal = call.principal<JWTPrincipal>()
                     val teamId = call.parameters["id"]?.toIntOrNull()
                     val userId = principal!!.payload.getClaim("userId").asInt()
-                    val request = teamService.deleteTeam(teamId!!, userId!!)
-                    call.respond(request)
+                    teamService.deleteTeam(teamId!!, userId!!)
+                    call.respondSuccessMessage(HttpStatusCode.OK ,  "Successfully deleted" )
                 }
             }
             put("/update/{id}") {
@@ -67,7 +67,7 @@ fun Route.teamRoutes(teamService: TeamService) {
                     val userId = principal!!.payload.getClaim("userId").asInt()
                     val request = call.receive<TeamEntity>()
                     val result = teamService.updateTeam(teamId!! , userId , request)
-                    call.respond(HttpStatusCode.OK, result)
+                    call.respondSuccess(HttpStatusCode.OK,"Successfully updated" ,result)
                 }
             }
             post("/add-user/{teamId}") {
@@ -76,8 +76,8 @@ fun Route.teamRoutes(teamService: TeamService) {
                     val teamId = call.parameters["teamId"]?.toIntOrNull()
                     val userId = principal!!.payload.getClaim("userId").asInt()
                     val request = call.receive<TeamDTO>()
-                    val result = teamService.addUserToTeam(teamId!! , request , userId)
-                    call.respond(HttpStatusCode.OK, result)
+                    teamService.addUserToTeam(teamId!! , request , userId)
+                    call.respondSuccessMessage(HttpStatusCode.OK, "Successfully added" )
 
                 }
             }
@@ -87,8 +87,8 @@ fun Route.teamRoutes(teamService: TeamService) {
                     val teamId = call.parameters["teamId"]?.toIntOrNull()
                     val userId = call.parameters["userId"]?.toIntOrNull()
                     val creatorId = principal!!.payload.getClaim("userId").asInt()
-                    val request = teamService.removeUserFromTeam(teamId!!, userId!! , creatorId)
-                    call.respond(HttpStatusCode.OK, request)
+                    teamService.removeUserFromTeam(teamId!!, userId!! , creatorId)
+                    call.respondSuccessMessage(HttpStatusCode.OK, "Successfully removed" )
                 }
             }
         }

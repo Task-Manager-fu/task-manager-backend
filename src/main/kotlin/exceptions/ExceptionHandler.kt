@@ -1,5 +1,6 @@
 package com.example.exceptions
 
+import com.example.utils.Response
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -13,15 +14,25 @@ suspend fun ApplicationCall.configureExceptionHandling(block: suspend () -> Unit
     try {
         block()
     } catch (e: AppException) {
-        respond(e.status, mapOf("error" to e.message, "code" to e.code))
+        respond(e.status, Response<Unit>(
+            status = e.status.value,
+            message = e.message,
+            errorCode = e.code
+        )
+        )
     } catch (e: NoSuchElementException) {
-        respond(HttpStatusCode.NotFound, mapOf("error" to (e.message ?: "Not found")))
+        respond(HttpStatusCode.NotFound, Response<Unit>(
+            status = HttpStatusCode.NotFound.value,
+            message = e.message ?: "Not found",
+            errorCode = "NOT_FOUND"
+        ))
     } catch (e: Throwable) {
         application.environment.log.error("Unhandled exception", e)
-        respond(HttpStatusCode.InternalServerError, mapOf("error" to "Internal server error"))
-    }catch (e: Exception) {
-        application.environment.log.error("Unhandled exception", e)
-        respond(HttpStatusCode.InternalServerError, mapOf("error" to e.message))
+        respond(HttpStatusCode.InternalServerError, Response<Unit>(
+            status = HttpStatusCode.InternalServerError.value,
+            message = "Internal server error",
+            errorCode = "INTERNAL_ERROR"
+        ))
     }
 }
 

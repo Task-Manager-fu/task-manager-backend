@@ -117,7 +117,7 @@ class TeamRepository {
     =
         newSuspendedTransaction(Dispatchers.IO) {
             TeamsTable.update({ TeamsTable.id eq teamId }) {
-               it[TeamsTable.name] = name
+                it[TeamsTable.name] = name
                 it[TeamsTable.description] = description
                 it[TeamsTable.updatedAt] = now()
             }

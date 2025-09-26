@@ -1,5 +1,7 @@
 package com.example
 
+import com.example.Task.TaskRepository
+import com.example.Task.TaskService
 import com.example.config.AppConfig
 import com.example.plugins.configureDatabase
 import com.example.plugins.configureRouting
@@ -39,10 +41,12 @@ fun Application.module() {
     val userRepository = UserRepository()
     val userService = UserService(userRepository)
     val authService = AuthService(userService, jwtConfig)
+    val taskService = TaskService(TaskRepository(), TeamRepository())
     configureRouting(
         authService,
         userService ,
-        TeamService(TeamRepository())
+        TeamService(TeamRepository()),
+        taskService
     )
 
 }

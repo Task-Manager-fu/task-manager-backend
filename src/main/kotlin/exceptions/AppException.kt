@@ -18,7 +18,6 @@ class UnauthorizedException(message: String= "Not allowed :)", code: Int = HttpS
         AppException(HttpStatusCode.Unauthorized, message, code.toString())
 class UserDoesNotExist(message: String= "This user does not exist!", code: Int = HttpStatusCode.NotFound.value) :
         AppException(HttpStatusCode.NotFound, message, code.toString())
-class AccessDenied(
-    message: String = "Access denied",
-    code: Int = HttpStatusCode.Forbidden.value,
+class AccessDeniedCustom(
+    message: String = "Access denied", code: Int = HttpStatusCode.Forbidden.value,
 ): AppException(HttpStatusCode.Forbidden, message, "ACCESS_DENIED")
