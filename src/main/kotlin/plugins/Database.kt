@@ -2,6 +2,7 @@ package com.example.plugins
 
 import com.example.Task.TaskAssignmentsTable
 import com.example.Task.TasksTable
+import com.example.comment.CommentsTable
 import com.example.config.AppConfig
 import com.example.team.TeamsTable
 import com.example.team.TeamsUsersTable
@@ -33,5 +34,6 @@ fun Application.configureDatabase(cfg: AppConfig) {
         SchemaUtils.create(TeamsUsersTable)
         SchemaUtils.create(TasksTable)
         SchemaUtils.create(TaskAssignmentsTable)
+        SchemaUtils.create(CommentsTable)
     }
 }

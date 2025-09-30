@@ -28,6 +28,7 @@ class JWTConfig(cfg: AppConfig.Jwt) {
             .withAudience(audience)
             .withSubject(username)
             .withClaim("userId", userId)
+            .withClaim("username", username)
             .withExpiresAt(Date(System.currentTimeMillis() + expiresInMs))
             .sign(algorithm)
 }

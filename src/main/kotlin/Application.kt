@@ -9,6 +9,8 @@ import com.example.plugins.configureSecurity
 import com.example.plugins.configureSerialization
 import com.example.auth.JWTConfig
 import com.example.auth.AuthService
+import com.example.comment.CommentRepository
+import com.example.comment.CommentService
 import com.example.user.UserRepository
 import com.example.user.UserService
 import com.example.exceptions.configureExceptionHandling
@@ -42,11 +44,13 @@ fun Application.module() {
     val userService = UserService(userRepository)
     val authService = AuthService(userService, jwtConfig)
     val taskService = TaskService(TaskRepository(), TeamRepository())
+    val commentService = CommentService(CommentRepository() , TeamRepository())
     configureRouting(
         authService,
         userService ,
         TeamService(TeamRepository()),
-        taskService
+        taskService,
+        commentService
     )
 
 }

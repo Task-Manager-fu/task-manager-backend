@@ -116,7 +116,6 @@ class TaskRepository {
 
     suspend fun getTasksOfTeam(teamId: Int, page: Int, pageSize: Int): List<TaskDTO> =
         newSuspendedTransaction{
-            // 1. گرفتن تسک‌ها با pagination
             val tasksQuery = TasksTable
                 .selectAll()
                 .where{ TasksTable.teamId eq teamId }
