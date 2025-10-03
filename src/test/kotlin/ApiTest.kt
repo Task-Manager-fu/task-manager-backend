@@ -19,22 +19,5 @@ import org.junit.Test
 class ApiTest {
     @Test
     fun testLogin() = testApplication {
-        val userRepository = UserRepository()
-        application {
-            val appConfig = AppConfig.from(environment.config)
-            val userService = UserService(userRepository)
-
-            val jwtConfig = JWTConfig(appConfig.jwt)
-
-            val authService = AuthService(userService, jwtConfig)
-
-            configureRouting(authService , userService)
-        }
-        val getUserMe = client.get("/users/private/me") {
-
-        }
-        println("Response body = ${getUserMe.bodyAsText()}")
-
-//        assertEquals(HttpStatusCode.OK, response.status)
     }
 }
