@@ -3,6 +3,7 @@ package com.example.plugins
 import com.example.Task.TaskService
 import com.example.Task.taskRoutes
 import com.example.auth.AuthService
+import com.example.auth.PasswordResetService
 import com.example.auth.authRoutes
 import com.example.comment.CommentService
 import com.example.comment.commentRoutes
@@ -21,7 +22,7 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 
-fun Application.configureRouting(authService: AuthService, userService: UserService  , teamService: TeamService , taskService: TaskService , commentService: CommentService) {
+fun Application.configureRouting(authService: AuthService, userService: UserService  , teamService: TeamService , taskService: TaskService , commentService: CommentService , resetService: PasswordResetService) {
 
     routing {
         get("/") {
@@ -33,7 +34,7 @@ fun Application.configureRouting(authService: AuthService, userService: UserServ
             }
         }
 
-        authRoutes(authService)
+        authRoutes(authService , resetService)
         userRoutes(userService)
         teamRoutes(teamService)
         taskRoutes(taskService)

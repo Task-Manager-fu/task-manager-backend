@@ -31,11 +31,13 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("io.ktor:ktor-server-swagger:${ktor_version}") // نسخه متناسب با Ktorت
     implementation("io.ktor:ktor-server-openapi:${ktor_version}")
+// اگر نیاز به openapi helper داری
     configurations.all {
         resolutionStrategy {
             force("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
         }
     }
+    implementation("com.sun.mail:jakarta.mail:2.0.0")
 
 
 // Database (Exposed + H2 or PostgreSQL)

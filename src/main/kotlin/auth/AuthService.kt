@@ -35,4 +35,5 @@ class AuthService(
         val token = jwt.generateToken(user.id!!, user.username)
         return TokenResponse(token = token, tokenType = "Bearer", expiresIn = jwt.expiresInMs / 1000)
     }
+
 }

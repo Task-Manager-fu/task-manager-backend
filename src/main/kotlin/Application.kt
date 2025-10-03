@@ -9,6 +9,9 @@ import com.example.plugins.configureSecurity
 import com.example.plugins.configureSerialization
 import com.example.auth.JWTConfig
 import com.example.auth.AuthService
+import com.example.auth.EmailService
+import com.example.auth.PasswordResetRepository
+import com.example.auth.PasswordResetService
 import com.example.comment.CommentRepository
 import com.example.comment.CommentService
 import com.example.user.UserRepository
@@ -39,18 +42,27 @@ fun Application.module() {
     configureSecurity(jwtConfig)
     configureSerialization()
     configureDatabase(appConfig)
-
+    configureSwagger()
     val userRepository = UserRepository()
     val userService = UserService(userRepository)
     val authService = AuthService(userService, jwtConfig)
     val taskService = TaskService(TaskRepository(), TeamRepository())
     val commentService = CommentService(CommentRepository() , TeamRepository())
+    val emailService = EmailService(
+        host = System.getenv("EMAIL_HOST"),
+        port = System.getenv("EMAIL_PORT")!!.toInt(),
+        username = System.getenv("EMAIL_USERNAME"),
+        password = System.getenv("EMAIL_PASSWORD")
+    )
+
+    val resetService = PasswordResetService(UserService(UserRepository()), PasswordResetRepository() , emailService)
     configureRouting(
         authService,
         userService ,
         TeamService(TeamRepository()),
         taskService,
-        commentService
+        commentService,
+        resetService
     )
 
 }
