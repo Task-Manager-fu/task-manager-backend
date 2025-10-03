@@ -17,7 +17,4 @@ import junit.framework.TestCase.assertEquals
 import org.junit.Test
 
 class ApiTest {
-    @Test
-    fun testLogin() = testApplication {
-    }
 }
