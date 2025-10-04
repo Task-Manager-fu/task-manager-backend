@@ -26,7 +26,7 @@ class TeamService(private val repository:  TeamRepository) {
     suspend fun deleteTeam(teamId: Int , creatorId: Int): Boolean {
         val team  = repository.getTeamById(teamId)?: throw NotFoundException("Team $teamId not found")
         val userIds = team.userIds
-        if (isAdmin(teamId = teamId, userId = creatorId)) {
+        if (!isAdmin(teamId = teamId, userId = creatorId)) {
             throw AccessDeniedCustom("You are not allowed to delete this team")
         }
         return repository.deleteTeam(teamId , userIds)

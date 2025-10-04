@@ -130,6 +130,8 @@ class TaskRepository {
                     status = row[TasksTable.status],
                     createdAt = row[TasksTable.createdAt].toEpochMilli(),
                     updatedAt = row[TasksTable.updatedAt].toEpochMilli(),
+                    deadline = row[TasksTable.deadline].toString(),
+                    priority = row[TasksTable.priority],
                     assignedToIds = mutableListOf()
                 )
             }
