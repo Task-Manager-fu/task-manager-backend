@@ -1,0 +1,7 @@
+nohup: ignoring input
+2026-06-24 16:05:15.233 [DefaultDispatcher-worker-2] INFO  Application - Autoreload is disabled because the development mode is off.
+2026-06-24 16:05:16.654 [DefaultDispatcher-worker-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2026-06-24 16:05:17.121 [DefaultDispatcher-worker-2] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.sqlite.jdbc4.JDBC4Connection@6ea7d986
+2026-06-24 16:05:17.127 [DefaultDispatcher-worker-2] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2026-06-24 16:05:18.202 [DefaultDispatcher-worker-2] INFO  Application - Application started in 3.09 seconds.
+2026-06-24 16:05:18.301 [DefaultDispatcher-worker-3] INFO  Application - Responding at http://0.0.0.0:8081

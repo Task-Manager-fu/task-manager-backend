@@ -36,7 +36,7 @@ fun Application.configureSwagger() {
         }
 
         // Swagger UI روی این آدرس
-        swaggerUI(path = "swagger", swaggerFile = "/Users/nimo/Downloads/ktor-sample/openapi/openapi.json") {
+        swaggerUI(path = "swagger", swaggerFile = "openapi/openapi.json") {
             version = "4.15.5"
         }
     }

@@ -49,10 +49,10 @@ fun Application.module() {
     val taskService = TaskService(TaskRepository(), TeamRepository())
     val commentService = CommentService(CommentRepository() , TeamRepository())
     val emailService = EmailService(
-        host = System.getenv("EMAIL_HOST"),
-        port = System.getenv("EMAIL_PORT")!!.toInt(),
-        username = System.getenv("EMAIL_USERNAME"),
-        password = System.getenv("EMAIL_PASSWORD")
+        host = "EMAIL_HOST",
+        port = 22,
+        username = "EMAIL_USERNAME",
+        password = "EMAIL_PASSWORD"
     )
 
     val resetService = PasswordResetService(UserService(UserRepository()), PasswordResetRepository() , emailService)

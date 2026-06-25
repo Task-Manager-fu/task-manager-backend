@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     application
+    id("com.github.johnrengelman.shadow") version "8.1.1"
     kotlin("plugin.serialization") version "2.1.10"
 }
 
@@ -18,7 +19,14 @@ val ktor_version = "2.3.3"
 val exposed_version = "0.55.0"
 val h2_version = "2.1.214"
 val logback_version = "1.4.12"
-
+application {
+    mainClass.set("com.example.ApplicationKt")
+}
+tasks.shadowJar {
+    manifest {
+        attributes["Main-Class"] = "ApplicationKt"
+    }
+}
 dependencies {
     // Ktor
     implementation("io.ktor:ktor-server-core:${ktor_version}")
